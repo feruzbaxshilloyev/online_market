@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <title>Izohlar - {{ product.name }} - Online Market</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: #f5f7fa;
+      padding: 30px;
+    }
+
+    .comments-section {
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .comment {
+      margin-bottom: 20px;
+      padding: 10px;
+      background: #f9f9f9;
+      border-radius: 10px;
+    }
+
+    .comment p {
+      font-size: 1rem;
+      color: #636e72;
+    }
+
+    .comment small {
+      color: #888;
+    }
+
+    .back-btn {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 10px 20px;
+      background-color: #3498db;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+
+    .back-btn:hover {
+      background-color: #2980b9;
+    }
+  </style>
+</head>
+<body>
+
+<div class="comments-section">
+  <h2>Izohlar:</h2>
+
+  {% for comment in com %}
+  <div class="comment">
+    <strong>{{ comment.user.username }}:</strong>
+    <p>{{ comment.text }}</p>
+    <small>{{ comment.created_at }}</small>
+  </div>
+  {% empty %}
+  <p>Izohlar hali mavjud emas.</p>
+  {% endfor %}
+
+  <a href="{% url 'app:detail' id=product.id %}" class="back-btn">Mahsulotga qaytish</a>
+</div>
+
+</body>
+</html>

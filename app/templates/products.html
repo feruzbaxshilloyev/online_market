@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <title>Mahsulotlar</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: #f4f6f9;
+      padding: 30px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 30px;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .product-card {
+      border: 1px solid #eee;
+      border-radius: 10px;
+      padding: 15px;
+      background: #fafafa;
+      transition: 0.3s ease;
+    }
+
+    .product-card:hover {
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .product-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .product-price {
+      color: #27ae60;
+      font-weight: bold;
+      margin-top: 5px;
+    }
+
+    .product-description {
+      margin-top: 10px;
+      font-size: 0.95rem;
+      color: #666;
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 8px 15px;
+      background: #3498db;
+      color: white;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: #2980b9;
+    }
+
+    .pagination {
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    .pagination a, .pagination span {
+      display: inline-block;
+      margin: 0 5px;
+      padding: 8px 12px;
+      text-decoration: none;
+      color: #3498db;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    .pagination .current {
+      background-color: #3498db;
+      color: white;
+      border-color: #3498db;
+    }
+
+    .pagination a:hover {
+      background-color: #2980b9;
+      color: white;
+    }
+    .add_mahsulot {
+  display: inline-block;
+  background-color: #2ecc71;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.add_mahsulot:hover {
+  background-color: #27ae60;
+}
+
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <a href="{% url 'app:add_product' %}" class="add_mahsulot">Mahsulot qo'shish</a>
+  <a href="{% url 'app:home' %}" class="add_mahsulot">Orqaga</a>
+  <a href="{% url 'search:search' %}" class="add_mahsulot">Qidirish</a>
+  <h1>Barcha mahsulotlar</h1>
+  <div class="product-grid">
+    {% for product in products %}
+
+      <div class="product-card">
+        {% if product.image %}
+          <div class="product-image">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-width: 150px; max-height: 150px; object-fit: cover;">
+          </div>
+        {% else %}
+          <div class="product-image">
+            <img src="default-image.jpg" alt="default" style="max-width: 150px; max-height: 150px; object-fit: cover;">
+          </div>
+        {% endif %}
+        <div class="product-title">{{ product.name }}</div>
+        <div class="product-price">{{ product.price }} so'm</div>
+        <div class="product-description">{{ product.description|truncatechars:100 }}</div>
+        <a href="{% url 'app:detail' product.id %}" class="btn">Batafsil</a>
+      </div>
+    {% endfor %}
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination">
+    {% if products.has_previous %}
+      <a href="?page=1">&laquo; birinchi</a>
+      <a href="?page={{ products.previous_page_number }}">oldingi</a>
+    {% endif %}
+
+    <span class="current">Sahifa {{ products.number }} / {{ products.paginator.num_pages }}</span>
+
+    {% if products.has_next %}
+      <a href="?page={{ products.next_page_number }}">keyingi</a>
+      <a href="?page={{ products.paginator.num_pages }}">oxirgi &raquo;</a>
+    {% endif %}
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>Bog‘lanish</title>
+    <style>
+        .contact-section {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f7f9fc;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .contact-section h3 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .contact-links a {
+            display: inline-block;
+            padding: 12px 20px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .contact-links a:hover {
+            background-color: #1d6fa5;
+            transform: translateY(-3px) scale(1.05);
+        }
+
+        .contact-links a.email {
+            background-color: #27ae60;
+        }
+
+        .contact-links a.email:hover {
+            background-color: #1e8449;
+        }
+
+        .contact-links a.telegram {
+            background-color: #0088cc;
+        }
+
+        .contact-links a.telegram:hover {
+            background-color: #006fa1;
+        }
+
+        .contact-links a.message {
+            background-color: #9b59b6;
+        }
+
+        .contact-links a.message:hover {
+            background-color: #7d3c98;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="contact-section">
+        <h3>Muallif bilan bog‘lanish</h3>
+        <div class="contact-links">
+            <h1>{{ ss.username }} bilan bog'lanish</h1><br>
+            <a href="#" class="message">+998{{ ss.phone_number }}</a>
+            <!-- Email orqali -->
+            <a href="mailto:{{ ss.email }}" class="email">Email yozish</a>
+            <a href="{% url 'profil:xabar_wr' ss.id %}" class="email">Chatda yuborish</a>
+            <!-- Telegram orqali -->
+            <a href="https://t.me/{{ ss.t_me }}" target="_blank" class="telegram">Telegram</a>
+
+            <!-- Sayt ichidan xabar yozish -->
+
+            <a href="{% url 'app:list' %}" class="message">Orqaga</a>
+        </div>
+    </div>
+
+</body>
+</html>

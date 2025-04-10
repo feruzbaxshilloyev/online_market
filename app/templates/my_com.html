@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>Mening Sharhlarim</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f0f2f5;
+            padding: 20px;
+        }
+        .comment-container {
+            max-width: 800px;
+            margin: auto;
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .comment-card {
+            border-left: 5px solid #007bff;
+            padding: 15px;
+            margin-bottom: 20px;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+        .comment-card h4 {
+            margin: 0;
+            color: #007bff;
+        }
+        .comment-card p {
+            margin-top: 8px;
+            color: #333;
+        }
+        .comment-date {
+            font-size: 0.9em;
+            color: #777;
+            margin-top: 5px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            background-color: #007bff;
+            color: #fff;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+        .back-link:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="comment-container">
+        <h2>Mening Fikrlarim</h2>
+
+        {% if comments %}
+            {% for comment in comments %}
+                <div class="comment-card">
+                    <h4>{{ comment.product.name }} mahsulotiga yozilgan</h4>
+                    <p>{{ comment.text }}</p>
+                    <div class="comment-date">
+                        Yozilgan sana: {{ comment.created_at|date:"d-m-Y H:i" }}
+                    </div>
+                    <a href="{% url 'app:coms' comment.product.id %}" class="back-link">Ko'rish</a>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>Siz hali hech qanday sharh yozmagansiz.</p>
+        {% endif %}
+
+        <a href="{% url 'app:home' %}" class="back-link">Orqaga</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <title>Online Market</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+      color: #333;
+      padding: 30px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 40px;
+    }
+
+    .logo h1 {
+      font-size: 3rem;
+      color: #2c3e50;
+    }
+
+    .profile-btn {
+      background-color: #3498db;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 30px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      text-decoration: none;
+    }
+
+    .profile-btn:hover {
+      background-color: #2980b9;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+    }
+
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .card h3 {
+      margin: 15px 0 5px;
+      font-size: 1.3rem;
+      color: #2d3436;
+    }
+
+    .card p {
+      color: #636e72;
+      font-size: 0.9rem;
+    }
+
+    .price {
+      margin-top: 10px;
+      font-weight: 600;
+      color: #e67e22;
+      font-size: 1.1rem;
+    }
+
+    footer {
+      margin-top: 60px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <h1>Online Market</h1>
+    </div>
+    {% if user.is_authenticated %}
+    <a href="{% url 'profil:profil' %}" class="profile-btn">Profil</a>
+    {% else %}
+    <a href="{% url 'profil:register' %}" class="profile-btn">Kirish</a>
+    {% endif %}
+    <a href="{% url 'app:list' %}" class="profile-btn">Mahsulotlar</a>
+    {% if user.is_authenticated %}
+    <a href="{% url 'app:savat_u' %}" class="profile-btn">Savat</a>
+    {% endif %}
+    <a href="{% url 'app:contact' %}" class="profile-btn">Contact</a>
+    <a href="{% url 'app:about' %}" class="profile-btn">About</a>
+
+  </header>
+
+
+ <section class="products">
+  {% for pr in prs|slice:'0:4' %}
+    <div class="card">
+      <a href="{% url 'app:detail' id=pr.id %}">
+      <img src="{{ pr.image.url }}" alt="{{ pr.name }}">
+      <h3>Nomi: {{ pr.name }}</h3>
+      <div class="price">Narxi: {{ pr.price }}</div>
+      </a>
+    </div>
+  {% endfor %}
+</section>
+
+  <footer>
+    © 2025 Online Market. Barcha huquqlar himoyalangan.
+  </footer>
+
+</body>
+</html>

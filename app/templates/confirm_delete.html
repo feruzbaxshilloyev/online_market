@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>Mahsulotni o‘chirish</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            text-align: center;
+            padding: 40px;
+            background-color: #f9f9f9;
+        }
+
+        .confirm-box {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 10px;
+        }
+
+        .delete-btn {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .cancel-btn {
+            background-color: #95a5a6;
+            color: white;
+        }
+
+        .delete-btn:hover {
+            background-color: #c0392b;
+        }
+
+        .cancel-btn:hover {
+            background-color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div class="confirm-box">
+        <h2>Rostdan ham "{{ product.name }}" mahsulotini o‘chirmoqchimisiz?</h2>
+
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="delete-btn">Ha, o‘chirish</button>
+            <a href="{% url 'app:detail' product.pk %}" class="cancel-btn" style="text-decoration:none; padding: 10px 20px; display: inline-block;">Bekor qilish</a>
+        </form>
+    </div>
+</body>
+</html>

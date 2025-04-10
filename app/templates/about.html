@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Biz haqimizda</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #f8f9fa, #e9ecef);
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    .navbar {
+      background-color: #343a40;
+      padding: 10px 0;
+    }
+
+    .navbar button {
+      background-color: #6c757d;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin: 0 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+
+    .navbar button:hover {
+      background-color: #495057;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      background-color: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      color: #343a40;
+    }
+
+    p {
+      color: #495057;
+      font-size: 18px;
+      line-height: 1.6;
+    }
+      .my-button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 16px;
+  transition: 0.3s;
+}
+.my-button:hover {
+  background-color: #0056b3;
+}
+  </style>
+</head>
+<body>
+  <div class="navbar">
+<a href="{% url 'app:home' %}" class="my-button">Bosh sahifa</a>
+<a href="{% url 'app:contact' %}" class="my-button">Bog'lanish</a>
+  </div>
+
+  <div class="container">
+    <h1>Sayt haqida</h1>
+    <p>
+      Bu saytda mahsulot sotishingiz yoki mahsulot sotib olishingiz mumkin
+    </p>
+  </div>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>Qidiruv Natijalari</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 700px;
+            margin: 50px auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        form {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 70%;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        li {
+            background-color: #ecf0f1;
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 18px;
+            color: #2c3e50;
+        }
+        p {
+            text-align: center;
+            font-size: 18px;
+            color: #888;
+        }
+         .product-link {
+        display: block;
+        background-color: #ecf0f1;
+        margin-bottom: 10px;
+        padding: 15px;
+        border-radius: 8px;
+        font-size: 18px;
+        color: #2c3e50;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+    }
+
+    .product-link:hover {
+        background-color: #d0d7de;
+    }
+        .back-button {
+  background-color: #4CAF50; /* Yashil fon */
+  color: white;              /* Matn rangi */
+  padding: 10px 20px;        /* Ichki bo'shliq */
+  border: none;              /* Chegara yo'q */
+  border-radius: 8px;        /* Yoyilgan burchaklar */
+  cursor: pointer;           /* Kursor ko‘rsatkichga o‘zgaradi */
+  font-size: 16px;           /* Matn o‘lchami */
+  transition: background-color 0.3s ease; /* Animatsiya */
+}
+
+.back-button:hover {
+  background-color: #45a049; /* Hover holatida rang o‘zgaradi */
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Qidiruv natijalari</h2>
+
+        <form method="get" action="{% url 'search:search' %}">
+            <input type="text" name="q" value="{{ query }}" placeholder="Mahsulotni qidiring">
+            <button type="submit">Qidirish</button>
+            <a href="{% url 'app:list' %}" class="back-button" onclick="history.back()">Orqaga</a>
+
+        </form>
+
+        {% if results %}
+            <ul>
+                {% for product in results %}
+<a href="{% url 'app:detail' product.id %}" class="product-link">
+    {{ product.name }} - {{ product.price }} so'm
+</a>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Natijalar topilmadi.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

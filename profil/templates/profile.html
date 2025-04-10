@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>Profil</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .profile-container {
+            text-align: center;
+        }
+        .profile-image img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .profile-details {
+            margin-top: 20px;
+            text-align: left;
+            font-size: 1.1em;
+        }
+        .profile-details p {
+            margin: 10px 0;
+        }
+        .btn {
+            display: inline-block;
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 25px;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+        .back-btn {
+            background-color: #f44336;
+        }
+        .back-btn:hover {
+            background-color: #e53935;
+        }
+        .logout-btn {
+            background-color: #008CBA;
+        }
+        .logout-btn:hover {
+            background-color: #007bb5;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <a href="{% url 'app:my_products' %}" class="btn">E'lonlarim</a>
+        <a href="{% url 'app:my_coms' %}" class="btn logout-btn">Izohlarim</a>
+
+    {% if user.is_superuser %}
+    <a href="{% url 'app:xabarlar' %}" class="btn">Sayt xabarlari</a>
+    {% endif %}
+
+    {% if user %}
+        <a href="#" class="btn logout-btn">Xabarlar</a>
+
+        <div class="profile-container">
+            {% load static %}
+            {% if user.image %}
+    <div class="profile-image">
+        <img src="{{ user.image.url }}" alt="Profil rasmi">
+    </div>
+{% else %}
+    <div class="profile-image">
+        <img src="{% static 'images/default.png' %}" alt="Default profil rasmi">
+    </div>
+{% endif %}
+
+            <h1>{{ user.username }}</h1>
+
+            <div class="profile-details">
+                <p><strong>Ism:</strong> {{ user.first_name }}</p>
+                <p><strong>Familiya:</strong> {{ user.last_name }}</p>
+                <p><strong>Elektron Pochta:</strong> {{ user.email }}</p>
+                <p><strong>Telefon:</strong> {{ user.phone_number }}</p>
+                <p><strong>Manzil:</strong> {{ user.address }}</p>
+                <p><strong>Telegram: </strong> @{{ user.t_me }}</p>
+
+            </div>
+
+            <!-- Orqaga tugmasi -->
+            <a href="{% url 'app:home' %}" class="btn logout-btn">Orqaga</a>
+
+            <!-- Profilni tahrirlash tugmasi -->
+            <a href="{% url 'profil:edit_profil' %}" class="btn">Profilni tahrirlash</a>
+
+
+            <a href="{% url 'profil:logout' %}" class="btn back-btn">Chiqish</a>
+        </div>
+    {% else %}
+        <a href="{% url 'profil:register' %}">Kirish</a>
+    {% endif %}
+</div>
+
+
+</body>
+</html>
