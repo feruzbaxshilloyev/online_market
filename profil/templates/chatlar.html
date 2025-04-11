@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatlar</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .user-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .user-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #fafafa;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .user-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        .user-item .username {
+            font-size: 16px;
+            color: #333;
+        }
+
+        .user-item .message-preview {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .user-item .message-preview span {
+            font-weight: bold;
+        }
+
+        .no-chats {
+            text-align: center;
+            color: #777;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Foydalanuvchi Chatlari</h2>
+
+        <ul class="user-list">
+            {% for chat in chats %}
+                <li class="user-item">
+                    <div>
+                        {% if chat.author != request.user %}
+                        <div class="username">{{ chat.author.username }}1</div>
+                        {% else %}
+                        <div class="username">{{ chat.receiver.username }}2</div>
+                        {% endif %}
+                    </div>
+                    <a href="{% url 'profil:chat' user.id %}">Chatga kirish</a>
+                </li>
+            {% endfor %}
+        </ul>
+        <div class="no-chats">Sizda hech qanday chat mavjud emas.</div>
+    <a href="{% url 'app:home' %}">Orqaga</a>
+</div>
+
+
+</body>
+</html>

@@ -74,7 +74,7 @@
     {% endif %}
 
     {% if user %}
-        <a href="#" class="btn logout-btn">Xabarlar</a>
+        <a href="{% url 'profil:chat_list' %}" class="btn logout-btn">Chatlar</a>
 
         <div class="profile-container">
             {% load static %}

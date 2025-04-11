@@ -79,7 +79,7 @@
             <a href="#" class="message">+998{{ ss.phone_number }}</a>
             <!-- Email orqali -->
             <a href="mailto:{{ ss.email }}" class="email">Email yozish</a>
-            <a href="{% url 'profil:xabar_wr' ss.id %}" class="email">Chatda yuborish</a>
+            <a href="{% url 'profil:chat' ss.id %}" class="email">Chatda yuborish</a>
             <!-- Telegram orqali -->
             <a href="https://t.me/{{ ss.t_me }}" target="_blank" class="telegram">Telegram</a>
 

@@ -57,7 +57,7 @@ def detail(request, id):
 
 def comments(request, id):
     product = get_object_or_404(Product, id=id)
-    coms = Comment.objects.filter(product=product)
+    coms = Comment.objects.filter(product=product).order_by('-created_at')
 
     context = {
         'product': product,
@@ -135,7 +135,7 @@ def delete_product(request, id):
         product.delete()
         return redirect('app:list')
 
-    return render(request, 'confirm_delete.html', {'product': product})
+    return render(request, 'confirm_del.html', {'product': product})
 
 
 @login_required

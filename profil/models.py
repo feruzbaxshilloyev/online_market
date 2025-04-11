@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
@@ -13,15 +14,18 @@ class CustomUser(AbstractUser):
     t_me = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.username
+        return self.t_me
 
 
-class Xabar(models.Model):
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='yuborilgan_xabarlar')
-    qabul = models.PositiveIntegerField()
+User = get_user_model()
+
+
+class Chat(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_messages')
+    receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='received_messages')
     desc = models.TextField()
-    is_view = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
+    is_view = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.author.username} → {self.recipient.username} | {self.created_at}"
+        return f"{self.author.username} → {self.qabul.username}: {self.desc[:20]}"

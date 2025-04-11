@@ -9,7 +9,10 @@ urlpatterns = [
     path('logout/', logout_view, name='logout'),
     path('edit_profile/', edit_profile, name='edit_profil'),
     path('s_detail/<int:id>', s_prof, name='s_detail'),
-    path('xabar_wr/<int:id>/', xabar_wr, name='xabar_wr'),
-
+    path('chat/<int:id>/', chat_view, name='chat'),
+    path('xabar_tahrir/<int:id>/', edit_message, name='edit_message'),
+    path('xabar_ochirish/<int:id>/', delete_message, name='delete_mes'),
+    path('confirm_delete/<int:id>/', confirm_delete, name='confirm_delete'),
+    path('chatlar/', chat_list, name='chat_list'),
 
 ]

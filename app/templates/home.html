@@ -107,7 +107,7 @@
     {% if user.is_authenticated %}
     <a href="{% url 'profil:profil' %}" class="profile-btn">Profil</a>
     {% else %}
-    <a href="{% url 'profil:register' %}" class="profile-btn">Kirish</a>
+    <a href="{% url 'profil:login' %}" class="profile-btn">Kirish</a>
     {% endif %}
     <a href="{% url 'app:list' %}" class="profile-btn">Mahsulotlar</a>
     {% if user.is_authenticated %}

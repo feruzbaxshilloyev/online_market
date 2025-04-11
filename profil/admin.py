@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from profil.models import CustomUser
+from profil.models import CustomUser, Chat
 
 
 # Register your models here.
@@ -18,3 +18,4 @@ class CustomUserAdmin(UserAdmin):
 
 
 admin.site.register(CustomUser, CustomUserAdmin)
+admin.site.register(Chat)
