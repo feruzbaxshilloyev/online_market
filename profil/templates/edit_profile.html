@@ -70,13 +70,42 @@
         .back-btn:hover {
             background-color: #d32f2f;
         }
+
+        .profile-image {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-image img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .profile-image input[type="file"] {
+            margin-top: 10px;
+            background-color: #fff;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h2>Profilni tahrirlash</h2>
 
-        <form method="POST">
+        <!-- Profil rasmni ko'rsatish -->
+        <div class="profile-image">
+            {% load static %}
+            {% if user.image %}
+                <img src="{{ user.image.url }}" alt="Profil rasmi">
+            {% else %}
+                <img src="{% static 'images/default.png' %}" alt="Default profil rasmi">
+            {% endif %}
+        </div>
+
+        <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit">Saqlash</button>

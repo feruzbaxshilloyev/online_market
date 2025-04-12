@@ -10,7 +10,7 @@ from django.conf import settings
 class CustomUser(AbstractUser):
     phone_number = models.CharField(max_length=15, blank=True, null=True)
     address = models.CharField(max_length=255, blank=True, null=True)
-    image = models.ImageField(upload_to='profile_images/', blank=True, null=True, default='media/default-profile.png')
+    image = models.FileField(upload_to='profile_images/', blank=True, null=True, default='media/default-profile.png')
     t_me = models.CharField(max_length=50)
 
     def __str__(self):

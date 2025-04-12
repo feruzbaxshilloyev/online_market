@@ -78,8 +78,25 @@
         <form method="POST">
             {% csrf_token %}
             <div class="form-group">
-                {{ form.as_p }}
+                {{ form.username }}
             </div>
+            <div class="form-group">
+                {{ form.password }}
+            </div>
+
+            <!-- Captcha masalasi --><div class="form-group">
+    <label for="id_captcha_answer">{{ form.captcha_answer.label }}</label>
+    {{ form.captcha_answer }}
+    {{ form.captcha_hidden }}
+    {% if form.captcha_answer.errors %}
+        <ul class="errorlist">
+            {% for error in form.captcha_answer.errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>
+
             <button type="submit">Kirish</button>
         </form>
 

@@ -1,5 +1,3 @@
-from datetime import timezone
-
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
 from django.db.models import Q
@@ -7,10 +5,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.urls import reverse_lazy
-
 from app.models import Xabar
 from .models import CustomUser, Chat
-
+from django.contrib.auth import authenticate, login
+from .forms import LoginForm
 from .forms import CustomUserCreationForm, ProfileEditForm
 from django.contrib.auth import login, logout, get_user_model
 
@@ -35,19 +33,34 @@ def profile(request):
     return render(request, 'profile.html', {'user': user})
 
 
-class CustomLoginview(LoginView):
-    template_name = 'login.html'
+def login_view(request):
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('app:home')
+            else:
+                form.add_error(None, 'Noto\'g\'ri foydalanuvchi nomi yoki parol.')
+    else:
+        form = LoginForm()
+
+    return render(request, 'login.html', {'form': form})
 
 
 @login_required
 def edit_profile(request):
     if request.method == 'POST':
-        form = ProfileEditForm(request.POST, instance=request.user)
+        form = ProfileEditForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
             return redirect('profil:profil')
     else:
         form = ProfileEditForm(instance=request.user)
+
     return render(request, 'edit_profile.html', {'form': form})
 
 
@@ -83,8 +96,9 @@ def chat_view(request, id):
             )
             return redirect('profil:chat', id=id)
 
-    messages = Chat.objects.all().order_by('created_at')
-    ctx = {'messages': messages, 'receiver': qabul, 'user': user, 'r_id': id}
+    mess = Chat.objects.filter(Q(author=user) & Q(receiver=qabul) | Q(author=qabul) & Q(receiver=user)).order_by(
+        'created_at')
+    ctx = {'messages': mess, 'receiver': qabul, 'user': user, 'r_id': id}
 
     return render(request, 'xabar_wr.html', ctx)
 
@@ -125,7 +139,32 @@ def confirm_delete(request, id):
 
 
 def chat_list(request):
-    ch = Chat.objects.all()
+    all_chats = Chat.objects.filter(Q(author=request.user) | Q(receiver=request.user)).order_by('-created_at')
+    unique_users = set()
     chats = []
 
-    return render(request, 'chatlar.html', {'chats': chats})
+    for chat in all_chats:
+        other_user = chat.receiver if chat.author == request.user else chat.author
+
+        if other_user not in unique_users and other_user != request.user:
+            unique_users.add(other_user)
+
+            if chat.author != request.user:
+                chat.author_messages_unread = Chat.objects.filter(
+                    author=chat.author,
+                    receiver=request.user,
+                    is_view=False
+                ).exists()
+                chat.receiver_messages_unread = False
+            else:
+                chat.receiver_messages_unread = Chat.objects.filter(
+                    author=chat.receiver,
+                    receiver=request.user,
+                    is_view=False
+                ).exists()
+                chat.author_messages_unread = False
+
+            chats.append(chat)
+
+    emp = len(chats) == 0
+    return render(request, 'chatlar.html', {'chats': chats, 'emp': emp})

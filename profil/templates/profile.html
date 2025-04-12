@@ -31,24 +31,29 @@
             margin-top: 20px;
             text-align: left;
             font-size: 1.1em;
+            color: #333;
         }
         .profile-details p {
             margin: 10px 0;
+            font-size: 1.1em;
         }
         .btn {
             display: inline-block;
             background-color: #4CAF50;
             color: white;
-            padding: 12px 25px;
+            padding: 12px 30px;
             text-align: center;
             text-decoration: none;
-            border-radius: 5px;
-            margin-top: 20px;
+            border-radius: 25px;
+            margin-top: 15px;
             font-weight: bold;
-            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
         }
         .btn:hover {
             background-color: #45a049;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
         }
         .back-btn {
             background-color: #f44336;
@@ -62,12 +67,19 @@
         .logout-btn:hover {
             background-color: #007bb5;
         }
+        .profile-container a {
+            display: block;
+            margin-top: 10px;
+        }
+        .profile-image {
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
 <div class="container">
     <a href="{% url 'app:my_products' %}" class="btn">E'lonlarim</a>
-        <a href="{% url 'app:my_coms' %}" class="btn logout-btn">Izohlarim</a>
+    <a href="{% url 'app:my_coms' %}" class="btn logout-btn">Izohlarim</a>
 
     {% if user.is_superuser %}
     <a href="{% url 'app:xabarlar' %}" class="btn">Sayt xabarlari</a>
@@ -79,14 +91,14 @@
         <div class="profile-container">
             {% load static %}
             {% if user.image %}
-    <div class="profile-image">
-        <img src="{{ user.image.url }}" alt="Profil rasmi">
-    </div>
-{% else %}
-    <div class="profile-image">
-        <img src="{% static 'images/default.png' %}" alt="Default profil rasmi">
-    </div>
-{% endif %}
+            <div class="profile-image">
+                <img src="{{ user.image.url }}" alt="Profil rasmi">
+            </div>
+            {% else %}
+            <div class="profile-image">
+                <img src="{% static 'images/default.png' %}" alt="Default profil rasmi">
+            </div>
+            {% endif %}
 
             <h1>{{ user.username }}</h1>
 
@@ -96,24 +108,27 @@
                 <p><strong>Elektron Pochta:</strong> {{ user.email }}</p>
                 <p><strong>Telefon:</strong> {{ user.phone_number }}</p>
                 <p><strong>Manzil:</strong> {{ user.address }}</p>
-                <p><strong>Telegram: </strong> @{{ user.t_me }}</p>
-
+                <p><strong>Telegram:</strong> @{{ user.t_me }}</p>
             </div>
 
             <!-- Orqaga tugmasi -->
-            <a href="{% url 'app:home' %}" class="btn logout-btn">Orqaga</a>
+            <a href="{% url 'app:home' %}" class="btn back-btn">Orqaga</a>
 
             <!-- Profilni tahrirlash tugmasi -->
             <a href="{% url 'profil:edit_profil' %}" class="btn">Profilni tahrirlash</a>
 
-
-            <a href="{% url 'profil:logout' %}" class="btn back-btn">Chiqish</a>
+            <a href="#" class="btn back-btn" onclick="confirmLogout()">Chiqish</a>
         </div>
     {% else %}
-        <a href="{% url 'profil:register' %}">Kirish</a>
+        <a href="{% url 'profil:register' %}" class="btn">Kirish</a>
     {% endif %}
 </div>
-
-
+<script>
+        function confirmLogout() {
+            if (confirm("Siz haqiqatan ham chiqmoqchimisiz?")) {
+                window.location.href = "{% url 'profil:logout' %}";  // Chiqish uchun URL
+            }
+        }
+    </script>
 </body>
 </html>

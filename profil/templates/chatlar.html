@@ -35,30 +35,32 @@
         .user-item {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             padding: 10px;
             margin: 10px 0;
             background-color: #fafafa;
             border-radius: 6px;
             cursor: pointer;
             transition: background-color 0.3s;
+            position: relative;
         }
 
         .user-item:hover {
             background-color: #f0f0f0;
         }
 
-        .user-item .username {
+        .username {
             font-size: 16px;
             color: #333;
         }
 
-        .user-item .message-preview {
-            font-size: 14px;
-            color: #666;
-        }
-
-        .user-item .message-preview span {
-            font-weight: bold;
+        .badge {
+            background-color: green;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+            margin-left: 8px;
         }
 
         .no-chats {
@@ -66,31 +68,57 @@
             color: #777;
             margin-top: 20px;
         }
+
+        a {
+            text-decoration: none;
+            color: #007bff;
+            font-size: 14px;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h2>Foydalanuvchi Chatlari</h2>
-
+    {% if not emp %}
         <ul class="user-list">
             {% for chat in chats %}
                 <li class="user-item">
                     <div>
                         {% if chat.author != request.user %}
-                        <div class="username">{{ chat.author.username }}1</div>
+                            <div class="username">
+                                <a href="{% url 'profil:s_detail' chat.author.id %}">{{ chat.author.username }}</a>
+                                {% if chat.author_messages_unread %}
+                                    <span class="badge"></span>
+                                {% endif %}
+                            </div>
                         {% else %}
-                        <div class="username">{{ chat.receiver.username }}2</div>
+                            <div class="username">
+                                <a href="{% url 'profil:s_detail' chat.receiver.id %}">{{ chat.receiver.username }}</a>
+                                {% if chat.receiver_messages_unread %}
+                                    <span class="badge"></span>
+                                {% endif %}
+                            </div>
                         {% endif %}
                     </div>
-                    <a href="{% url 'profil:chat' user.id %}">Chatga kirish</a>
+                    {% if chat.author == request.user %}
+                        <a href="{% url 'profil:chat' chat.receiver.id %}">Chatga kirish</a>
+                    {% else %}
+                        <a href="{% url 'profil:chat' chat.author.id %}">Chatga kirish</a>
+                    {% endif %}
                 </li>
             {% endfor %}
         </ul>
+    {% else %}
         <div class="no-chats">Sizda hech qanday chat mavjud emas.</div>
-    <a href="{% url 'app:home' %}">Orqaga</a>
+        <a href="{% url 'app:home' %}">⬅ Orqaga</a>
+    {% endif %}
+    <a href="{% url 'profil:profil' %}">Orqaga</a>
 </div>
-
 
 </body>
 </html>

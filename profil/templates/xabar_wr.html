@@ -7,7 +7,7 @@
     body {
       margin: 0;
       padding: 0;
-      font-family: sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #e5ddd5;
     }
 
@@ -31,7 +31,7 @@
       max-width: 60%;
       padding: 10px 15px;
       margin: 10px;
-      border-radius: 10px;
+      border-radius: 15px;
       position: relative;
       word-wrap: break-word;
       border: 1px solid transparent;
@@ -59,6 +59,7 @@
       display: flex;
       justify-content: space-between;
       gap: 10px;
+      position: relative;
     }
 
     .message .meta a {
@@ -71,6 +72,42 @@
       text-decoration: underline;
     }
 
+    .message-actions {
+      display: flex;
+      gap: 10px;
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+
+    .message-actions a {
+      font-size: 16px;
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    .message-actions a:hover {
+      text-decoration: underline;
+    }
+
+    .checkmarks {
+      font-size: 13px;
+      color: #888;
+      margin-left: 8px;
+      position: absolute;
+      right: -17px; /* Tugmalar orasida masofa qoldiradi */
+      top: 0;
+    }
+
+    .checkmark-1, .checkmark-2 {
+      display: inline;
+      margin-left: -10px;
+    }
+
+    .checkmark-2 {
+      color: #4CAF50;
+    }
+
     .form-send {
       display: flex;
       padding-top: 10px;
@@ -79,34 +116,58 @@
 
     .form-send input[type="text"] {
       flex: 1;
-      padding: 10px;
-      border-radius: 20px;
+      padding: 12px 15px;
+      border-radius: 25px;
       border: 1px solid #ccc;
       outline: none;
+      font-size: 14px;
     }
 
-    .form-send button {
-      padding: 10px 20px;
-      margin-left: 10px;
-      background-color: #4CAF50;
+    button {
+      padding: 10px 25px;
+      background: linear-gradient(135deg, #4CAF50, #2e7d32);
       border: none;
       color: white;
-      border-radius: 20px;
+      font-weight: bold;
+      border-radius: 30px;
       cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
     }
 
-    .form-send button:hover {
-      background-color: #45a049;
+    button:hover {
+      background: linear-gradient(135deg, #66bb6a, #388e3c);
+      transform: scale(1.05);
     }
 
     .back-link {
-      margin-top: 10px;
-      display: block;
+      display: inline-block;
+      padding: 10px 20px;
+      background: linear-gradient(135deg, #2196f3, #1976d2);
+      color: white;
+      font-weight: bold;
+      text-decoration: none;
+      border-radius: 30px;
+      text-align: center;
+      margin-top: 15px;
+      transition: background 0.3s ease, transform 0.2s ease;
     }
+
+    .back-link:hover {
+      background: linear-gradient(135deg, #64b5f6, #1565c0);
+      transform: scale(1.05);
+    }
+
   </style>
 </head>
 <body>
   <div class="chat-container">
+    <div style="font-size: 18px; font-weight: bold; margin-bottom: 10px; text-align: center;">
+      <a href="{% url 'profil:s_detail' receiver.id %}">{{ receiver.username }}</a>
+    </div>
+    {% if receiver.image %}
+    <img src="{{ receiver.image.url }}" alt="Profil rasmi" style="width: 35px; height: 35px; border-radius: 50%; vertical-align: middle; margin-right: 10px;">
+    {% endif %}
+
     <div class="messages">
       {% for message in messages %}
         {% if message.author == request.user %}
@@ -114,41 +175,46 @@
             <div>{{ message.desc }}</div>
             <div class="meta">
               <span>{{ message.created_at|date:"H:i" }}</span>
-              <a href="{% url 'profil:edit_message' message.id %}">✏️</a>
-              <a href="{% url 'profil:delete_mes' message.id %}">🗑️</a>
+              <div class="checkmarks">
+                {% if message.is_view %}
+                  <span class="checkmark-1">✔</span>
+                  <span class="checkmark-2">✔</span>
+                {% else %}
+                  <span class="checkmark-1">✔</span>
+                {% endif %}
+              </div>
+              <div class="message-actions">
+                <a href="{% url 'profil:edit_message' message.id %}">✏️</a>
+                <a href="{% url 'profil:delete_mes' message.id %}">🗑️</a>
+              </div>
             </div>
           </div>
         {% else %}
-
           <div class="message left {% if not message.is_view %}unread{% endif %}">
             <div>{{ message.desc }}</div>
             <div class="meta">
               <span>{{ message.created_at|date:"H:i" }}</span>
-              {% if not message.is_view %}
-              {% endif %}
             </div>
-            {% if not message.is_view %}
-            <form method="POST">
-      {% csrf_token %}
-      <button type="submit" name="mark_as_read">O‘qilgan qilish</button>
-    </form>
-            {% endif %}
           </div>
-
         {% endif %}
       {% endfor %}
     </div>
-<form method="POST">
+
+    <!-- "Hammasini o‘qish" tugmasi -->
+    <form method="POST" style="margin-top: 10px;">
       {% csrf_token %}
       <button type="submit" name="mark_as_read">Hammasini o‘qish</button>
     </form>
+
+    <!-- Xabar yuborish formasi -->
     <form method="post" class="form-send">
-  {% csrf_token %}
-  <input type="text" name="desc" placeholder="Xabar yozish..." required>
-  <!-- Yuborish tugmasi -->
-  <button type="submit">Yuborish</button>
-</form>
-    <a class="back-link" href="{% url 'profil:s_detail' r_id %}">⬅ Orqaga</a>
+      {% csrf_token %}
+      <input type="text" name="desc" placeholder="Xabar yozish..." required>
+      <button type="submit">Yuborish</button>
+    </form>
+
+    <!-- Orqaga tugmasi -->
+    <a class="back-link" href="{% url 'profil:chat_list' %}">⬅ Orqaga</a>
   </div>
 </body>
 </html>

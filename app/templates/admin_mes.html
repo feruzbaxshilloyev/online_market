@@ -104,11 +104,10 @@
         {% csrf_token %}
         <div class="xabar {% if not xabar.is_view %}unviewed{% endif %}" onclick="this.submit()">
           <input type="hidden" name="xabar_id" value="{{ xabar.id }}">
-          <a href="{% url 'profil:s_detail' xabar.author.id %}">
           <div class="muallif">{{ xabar.author.username }}</div>
           <div class="sana">{{ xabar.created_at|date:"Y-m-d H:i" }}</div>
           <div class="matn">{{ xabar.desc }}</div>
-            </a>
+            <a href="{% url 'profil:chat' xabar.author.id %}">Javob berish</a>
         </div>
       </form>
     {% empty %}

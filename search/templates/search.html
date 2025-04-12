@@ -109,7 +109,7 @@
 
         {% if results %}
             <ul>
-                {% for product in results %}
+                {% for product in results|slice:'0:10' %}
 <a href="{% url 'app:detail' product.id %}" class="product-link">
     {{ product.name }} - {{ product.price }} so'm
 </a>

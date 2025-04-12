@@ -129,7 +129,12 @@
 <div class="container">
   <a href="{% url 'app:add_product' %}" class="add_mahsulot">Mahsulot qo'shish</a>
   <a href="{% url 'app:home' %}" class="add_mahsulot">Orqaga</a>
+  {% if user %}
   <a href="{% url 'search:search' %}" class="add_mahsulot">Qidirish</a>
+  {% else %}
+    <a href="{% url 'profil:login' %}" class="add_mahsulot">Qidirish</a>
+  {% endif %}
+
   <h1>Barcha mahsulotlar</h1>
   <div class="product-grid">
     {% for product in products %}
