@@ -24,6 +24,7 @@ def detail(request, id):
     ratings = Rating.objects.filter(product=pr)
     user_rating = Rating.objects.filter(product=pr, user=request.user).first()
     pr.views += 1
+    pr.save()
     user1 = request.user
     avg_rating = ratings.aggregate(Avg('score'))['score__avg'] if ratings.exists() else 0
 
@@ -70,18 +71,19 @@ def comments(request, id):
 @login_required
 def savat_u(request):
     savat = Savat.objects.filter(user=request.user).first()
+    savat_mahsulotlar = SavatMahsulot.objects.filter(savat=savat)
 
     if savat:
-        savat_mahsulotlar = SavatMahsulot.objects.filter(savat=savat)
         products = [i.product for i in savat_mahsulotlar]
     else:
         products = []
 
-    return render(request, 'savat.html', {'products': products})
+    return render(request, 'savat.html', {'sm': savat_mahsulotlar, 'products': products})
 
 
 def savat_rem(request, id):
-    savat_mahsulot = get_object_or_404(SavatMahsulot, id=id)
+    savat = get_object_or_404(Savat, user=request.user)
+    savat_mahsulot = get_object_or_404(SavatMahsulot, savat=savat, product__id=id)
     savat_mahsulot.delete()
 
     return redirect('app:savat_u')

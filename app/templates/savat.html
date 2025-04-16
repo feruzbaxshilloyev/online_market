@@ -102,23 +102,21 @@
   </ul>
 
   <ul class="product-list">
-    {% for product in products %}
+    {% for product in sm %}
 
       <li class="product-item">
 
-        <span class="product-name">{{ product.name }}</span> {{ product.quantity }}
+        <span class="product-name">{{ product.product.name }}</span> {{ product.product.quantity }}
 
 
-        <span class="product-price">{{ product.price }} SO'M</span>
+        <span class="product-price">{{ product.product.price }} SO'M</span>
 
         <form method="POST" action="{% url 'app:savat_rem' product.id %}" style="display: inline;">
             {% csrf_token %}
-          <a href="{% url 'app:detail' product.id %}" class="back-btn" >Ko'rish</a>
-            <button type="submit" class="delete-btn">O'chirish</button>
+          <a href="{% url 'app:detail' product.product.id %}" class="back-btn" >Ko'rish</a>
+          <a href="{% url 'app:savat_rem' product.product.id %}" class="delete-btn" >O'chirish</a>
           </form>
-
       </li>
-
     {% empty %}
       <li>Hozirda savat bo'sh.</li>
     {% endfor %}

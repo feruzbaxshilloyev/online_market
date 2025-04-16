@@ -85,7 +85,8 @@ def chat_view(request, id):
     if request.method == 'POST':
         desc = request.POST.get('desc')
         if 'mark_as_read' in request.POST:
-            Chat.objects.update(is_view=True)
+            upd = Chat.objects.filter(receiver=request.user)
+            upd.update(is_view=True)
             return redirect('profil:chat', id=id)
 
         if desc:
@@ -112,7 +113,7 @@ def edit_message(request, id):
         if desc:
             message.desc = desc
             message.save()
-            return redirect('profil:chat', id=1)
+            return redirect('profil:chat', id=message.receiver.id)
 
     return render(request, 'edit_message.html', {'message': message})
 
